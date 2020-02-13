@@ -1,4 +1,4 @@
-from math import ceil
+from math import ceil, sqrt
 
 def func(x, u):
     return x ** 2  + u ** 2
@@ -13,8 +13,16 @@ def euler(n, h, x, y):
     return y_out
 
 def implicit_euler(n, h, x, y):
-    y_out = [[0, 0]]
-    # TODO
+    y_out = [y]
+    for i in range(n):
+        D = 1 - 4*h*(y + h*((x + h)**2))
+        if D < 0:
+            y_out.append('D<0')
+            continue
+        y = (1 - sqrt(D)) / (2*h)
+        x += h
+        #print(x)
+        y_out.append(y)
     return y_out
 
 
@@ -39,7 +47,7 @@ def picar(n, h, x):
         
 
 def work():
-    h = 10 ** -3
+    h = 10 ** -2
     x = 0
     y0 = 0
     end = 2

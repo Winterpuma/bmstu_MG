@@ -1,5 +1,6 @@
 from math import ceil, sqrt
 
+# Вывод результата разной природы в формате строки
 def output(s):
     if type(s) == float:
         if s > 1000000:
@@ -13,6 +14,7 @@ def output(s):
 def func(x, u):
     return x ** 2  + u ** 2
 
+# Явный Эйлера
 def euler(n, h, x, y):
     y_out = []
     for i in range(n):
@@ -25,9 +27,9 @@ def euler(n, h, x, y):
             for j in range(i, n-1):
                 y_out.append('-----')
             break
-        
     return y_out
 
+# Неявный Эйлера
 def implicit_euler(n, h, x, y):
     y_out = [y]
     for i in range(n):
@@ -37,13 +39,13 @@ def implicit_euler(n, h, x, y):
             for j in range(i, n-2):
                 y_out.append('-----')
             break
-        y = (1 - sqrt(D)) / (2*h)
+        y = (1 - sqrt(D)) / (2*h) # берем корень с минусом
         x += h
         y_out.append(y)
     return y_out
 
-
-def picar(n, h, x):
+# Пикар
+def picar(n, h, x, y0):
     def f1(a):
         return a ** 3 / 3
     def f2(a):
@@ -54,7 +56,7 @@ def picar(n, h, x):
         return f3 + (a ** 15)*(2 / 93555) + (a ** 19)*(2 / 3393495) + (a ** 19)*(2 / 2488563) + \
     (a ** 23)*(2 / 86266215) + (a ** 23)*(1 / 99411543) + (a ** 27)*(2 / 3341878155) + (a ** 31)*(1 / 109876902975)
 
-    y_out = [[0, 0]]
+    y_out = [[y0, y0]]
     for i in range(n-1):
         x += h
         y_f3 = f3(x)
@@ -63,22 +65,23 @@ def picar(n, h, x):
         
 
 def work():
-    h = 10 ** -2
+    h = 10 ** -5 # 10**-5 это хороший шаг для численных методов
+    
     x = 0
     y0 = 0
-    end = 3
+    end = 2.1
 
     n = ceil(abs(end - x)/h)+1 # количество повторений
 
     x_arr = [x + h*i for i in range(n)]
     y1 = euler(n, h, x, y0)
     y2 = implicit_euler(n, h, x, y0)
-    y3 = picar(n, h, x)
-
-    print(len(y1), len(y2), len(y3))
+    y3 = picar(n, h, x, y0)
 
     print("|    x    |   Пикара 3    |    Пикара 4   |     Явный     |    Неявный    |")
-    for i in range(n):
+    print("-"*75)
+    output_step = int(n/100) # выводим только 100 значений в таблице 
+    for i in range(0, n, output_step):
         print("|{:^9.5f}|{:^15.8f}|{:^15.8f}|{:^15s}|{:^15s}|".format(x_arr[i],y3[i][0],y3[i][1],output(y1[i]),output(y2[i])))
 
 

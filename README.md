@@ -1,2 +1,2 @@
-# bmstu_math-modeling
+# Моделирование с Градовым :heart:
 bmstu, IU7-6, Моделирование (2020)
